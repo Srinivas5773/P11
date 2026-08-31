@@ -1,0 +1,1092 @@
+/**
+ * FruitQuest - Main Stylesheet
+ * Responsive glassmorphism interface, game screens, HUDs, typography, and controls.
+ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  transition: background 0.6s ease;
+}
+
+#particle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* App Header & Navigation */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--surface-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: -0.5px;
+}
+
+.brand-icon {
+  font-size: 1.8rem;
+  filter: drop-shadow(0 2px 8px var(--primary-glow));
+}
+
+.brand-logo span {
+  background: linear-gradient(135deg, var(--text-main), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.coins-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 0.95rem;
+  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.1);
+}
+
+.btn-icon {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  padding: 0.45rem 0.8rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+  border-color: var(--primary-color);
+}
+
+.btn-icon.active {
+  background: var(--primary-color);
+  color: #000;
+  font-weight: 700;
+}
+
+/* Main Container & Screens */
+.app-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  min-height: calc(100vh - 80px);
+}
+
+.game-screen {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.game-screen.active {
+  display: block;
+  opacity: 1;
+}
+
+/* --- MAIN MENU SCREEN --- */
+.hero-banner {
+  text-align: center;
+  padding: 2rem 1rem 1.5rem;
+}
+
+.hero-title {
+  font-size: 2.8rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  letter-spacing: -1px;
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* Daily Challenge Card */
+.daily-challenge-card {
+  background: linear-gradient(135deg, rgba(255, 183, 3, 0.2), rgba(251, 133, 0, 0.1));
+  border: 1px solid rgba(255, 183, 3, 0.4);
+  border-radius: 20px;
+  padding: 1.2rem 1.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem auto 2rem;
+  max-width: 800px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.daily-challenge-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 30px rgba(251, 133, 0, 0.25);
+}
+
+.daily-badge {
+  background: var(--gold);
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 0.3rem;
+}
+
+.daily-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.daily-reward {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+/* Game Modes Grid */
+.modes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.mode-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 1.8rem 1.4rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.mode-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--btn-grad);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mode-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary-color);
+  box-shadow: 0 12px 35px var(--primary-glow);
+}
+
+.mode-card:hover::before {
+  opacity: 1;
+}
+
+.mode-icon {
+  font-size: 3rem;
+  margin-bottom: 0.8rem;
+}
+
+.mode-name {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.mode-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.mode-tag {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+}
+
+/* Hub Navigation Shortcuts */
+.hub-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.hub-btn {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  border-radius: 16px;
+  padding: 1.1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hub-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--secondary-color);
+  transform: translateY(-3px);
+}
+
+/* --- GAMEPLAY SHARED LAYOUT & HUD --- */
+.game-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 0.8rem 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hud-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.hud-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.heart-icon {
+  font-size: 1.3rem;
+  margin: 0 1px;
+}
+
+.heart-icon.lost {
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+/* Timer Bar */
+.timer-bar-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.timer-bar-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--btn-grad);
+  border-radius: 999px;
+  transition: width 1s linear;
+}
+
+/* Fruit Presentation Card */
+.fruit-stage-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.fruit-vector-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.fruit-svg {
+  filter: drop-shadow(0 8px 20px var(--primary-glow));
+  transition: all 0.3s ease;
+}
+
+.silhouette-badge {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--surface-border);
+}
+
+/* Botanical Clue Box */
+.clue-box {
+  background: rgba(255, 183, 3, 0.15);
+  border: 1px solid rgba(255, 183, 3, 0.4);
+  border-radius: 12px;
+  padding: 0.8rem 1.2rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--gold);
+}
+
+.clue-box.hidden {
+  display: none;
+}
+
+/* 4-Choice Options Grid */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.game-option-btn {
+  background: var(--surface-bg);
+  border: 2px solid var(--surface-border);
+  color: var(--text-main);
+  border-radius: 18px;
+  padding: 1.1rem 1.4rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  position: relative;
+  text-align: left;
+}
+
+.game-option-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--primary-glow);
+}
+
+.option-key-badge {
+  background: rgba(255, 255, 255, 0.15);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.option-text {
+  flex: 1;
+}
+
+/* Lifeline Toolbar */
+.lifelines-toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-lifeline {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  border-radius: 12px;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-lifeline:hover:not(:disabled) {
+  background: var(--surface-hover);
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+.btn-lifeline:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.lifeline-badge {
+  background: var(--accent-color);
+  color: #000;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+/* --- WORD SCRAMBLE UI --- */
+.scramble-slots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+}
+
+.letter-slot {
+  width: 48px;
+  height: 54px;
+  border-bottom: 3px solid var(--primary-color);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.letter-slot.filled {
+  background: var(--surface-bg);
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+}
+
+.letter-slot.correct-slot {
+  background: var(--success-color);
+  color: #FFF;
+  border-color: #FFF;
+}
+
+.letter-slot.wrong-slot {
+  background: var(--danger-color);
+  color: #FFF;
+  border-color: #FFF;
+}
+
+.scramble-pool {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem;
+  margin: 1.5rem 0;
+}
+
+.letter-tile {
+  width: 52px;
+  height: 54px;
+  background: var(--btn-grad);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.15s ease;
+}
+
+.letter-tile:hover {
+  transform: translateY(-4px) scale(1.05);
+}
+
+.scramble-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* --- FRUIT SLICER CANVAS CONTAINER --- */
+.slicer-container {
+  width: 100%;
+  height: 520px;
+  background: radial-gradient(circle at 50% 50%, #15221b, #070d0a);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+#slicer-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* --- FRUITDEX ENCYCLOPEDIA --- */
+.dex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dex-search-input {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  padding: 0.65rem 1.2rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  width: 280px;
+}
+
+.dex-search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.dex-filters {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.dex-filter-btn {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dex-filter-btn.active {
+  background: var(--primary-color);
+  color: #000;
+}
+
+.fruitdex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 1.2rem;
+}
+
+.dex-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 1.2rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.dex-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-color);
+}
+
+.dex-card.locked {
+  opacity: 0.6;
+  filter: grayscale(0.8);
+  cursor: default;
+}
+
+.dex-card-name {
+  font-weight: 800;
+  margin-top: 0.6rem;
+  font-size: 1.05rem;
+}
+
+.dex-card-cat {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.dex-card-diff {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+.diff-easy { background: rgba(82, 183, 136, 0.2); color: #52B788; }
+.diff-medium { background: rgba(255, 183, 3, 0.2); color: #FFB703; }
+.diff-hard { background: rgba(230, 57, 70, 0.2); color: #E63946; }
+.diff-legendary { background: rgba(157, 78, 221, 0.2); color: #9D4EDD; }
+
+/* --- SHOP & CUSTOMIZATION --- */
+.shop-section-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+
+.shop-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.shop-preview {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.shop-card-info {
+  flex: 1;
+}
+
+.shop-card-name {
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.shop-card-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.btn-shop {
+  background: var(--btn-grad);
+  border: none;
+  color: #FFF;
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-shop.equipped {
+  background: var(--surface-bg);
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.btn-shop.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --- ACHIEVEMENTS GRID --- */
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.achievement-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.achievement-card.locked {
+  opacity: 0.5;
+}
+
+.ach-icon {
+  font-size: 2.2rem;
+}
+
+.ach-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.ach-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.ach-reward {
+  margin-left: auto;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+/* --- MODAL OVERLAYS --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  padding: 1.5rem;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 28px;
+  padding: 2.2rem;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+/* Fruit Detail Modal */
+.detail-art-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.detail-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.detail-scientific {
+  text-align: center;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 1.2rem;
+}
+
+.detail-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+  background: var(--surface-bg);
+  padding: 1rem;
+  border-radius: 16px;
+}
+
+.detail-meta-item strong {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.detail-nutrition-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.4rem;
+  text-align: center;
+  background: rgba(0,0,0,0.2);
+  padding: 0.8rem;
+  border-radius: 12px;
+  margin-bottom: 1.2rem;
+}
+
+.nutri-box strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--secondary-color);
+}
+
+.nutri-box span {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.detail-fact-card {
+  background: rgba(255, 183, 3, 0.15);
+  border: 1px solid rgba(255, 183, 3, 0.3);
+  padding: 1rem;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--gold);
+}
+
+/* Game Over Modal */
+.gameover-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.newhigh-banner {
+  background: linear-gradient(135deg, #FFB703, #FB8500);
+  color: #000;
+  font-weight: 900;
+  padding: 0.4rem;
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem;
+}
+
+.newhigh-banner.hidden {
+  display: none;
+}
+
+.gameover-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1.8rem;
+}
+
+.gameover-stat-box {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  padding: 0.9rem;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.gameover-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.gameover-stat-val {
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.gameover-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-primary {
+  flex: 1;
+  background: var(--btn-grad);
+  border: none;
+  color: #FFF;
+  padding: 1rem;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  flex: 1;
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  padding: 1rem;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Toast Container */
+#achievement-toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  z-index: 99999;
+}
+
+.achievement-toast {
+  background: var(--card-bg);
+  border: 2px solid var(--gold);
+  border-radius: 18px;
+  padding: 1rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  min-width: 300px;
+}
+
+.toast-icon {
+  font-size: 2.2rem;
+}
+
+.toast-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+}
+
+.toast-title {
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.toast-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.toast-reward {
+  font-weight: 800;
+  color: var(--gold);
+  font-size: 0.85rem;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0.8rem 1rem;
+  }
+  .hero-title {
+    font-size: 2rem;
+  }
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+  .game-hud {
+    padding: 0.6rem 0.8rem;
+  }
+  .hud-value {
+    font-size: 1.1rem;
+  }
+  .letter-slot {
+    width: 38px;
+    height: 44px;
+    font-size: 1.3rem;
+  }
+  .letter-tile {
+    width: 42px;
+    height: 44px;
+    font-size: 1.2rem;
+  }
+  .slicer-container {
+    height: 400px;
+  }
+}

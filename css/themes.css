@@ -1,0 +1,118 @@
+/**
+ * FruitQuest - Visual Themes & Dynamic Palette Schemes
+ */
+
+:root {
+  /* Default: Tropical Orchard */
+  --bg-gradient: radial-gradient(circle at 50% 20%, #1e3d30, #0c1813 85%);
+  --surface-bg: rgba(255, 255, 255, 0.08);
+  --surface-border: rgba(255, 255, 255, 0.15);
+  --surface-hover: rgba(255, 255, 255, 0.14);
+  --card-bg: rgba(18, 42, 32, 0.85);
+  --card-border: rgba(82, 183, 136, 0.3);
+  
+  --primary-color: #52B788;
+  --primary-glow: rgba(82, 183, 136, 0.45);
+  --secondary-color: #74C69D;
+  --accent-color: #FFB703;
+  --danger-color: #E63946;
+  --success-color: #2DC653;
+  --text-main: #FFFFFF;
+  --text-muted: #B7E4C7;
+  --gold: #FFD166;
+  
+  --btn-grad: linear-gradient(135deg, #2D6A4F, #52B788);
+  --btn-grad-hover: linear-gradient(135deg, #40916C, #74C69D);
+}
+
+/* Theme: Cyberfruit 2077 */
+[data-theme="neon_cyber"] {
+  --bg-gradient: radial-gradient(circle at 50% 20%, #1a0836, #060112 85%);
+  --surface-bg: rgba(114, 9, 183, 0.12);
+  --surface-border: rgba(76, 201, 240, 0.35);
+  --surface-hover: rgba(76, 201, 240, 0.25);
+  --card-bg: rgba(20, 5, 45, 0.9);
+  --card-border: rgba(247, 37, 133, 0.4);
+  
+  --primary-color: #4CC9F0;
+  --primary-glow: rgba(76, 201, 240, 0.6);
+  --secondary-color: #F72585;
+  --accent-color: #7209B7;
+  --danger-color: #FF0054;
+  --success-color: #00F5D4;
+  --text-main: #FFFFFF;
+  --text-muted: #D8B4F8;
+  --gold: #FFD166;
+  
+  --btn-grad: linear-gradient(135deg, #7209B7, #F72585);
+  --btn-grad-hover: linear-gradient(135deg, #4CC9F0, #7209B7);
+}
+
+/* Theme: Midnight Berry */
+[data-theme="midnight_berry"] {
+  --bg-gradient: radial-gradient(circle at 50% 20%, #150a2e, #050212 85%);
+  --surface-bg: rgba(58, 12, 163, 0.15);
+  --surface-border: rgba(114, 9, 183, 0.3);
+  --surface-hover: rgba(114, 9, 183, 0.25);
+  --card-bg: rgba(15, 6, 36, 0.9);
+  --card-border: rgba(114, 9, 183, 0.4);
+  
+  --primary-color: #9D4EDD;
+  --primary-glow: rgba(157, 78, 221, 0.5);
+  --secondary-color: #C77DFF;
+  --accent-color: #FF9E00;
+  --danger-color: #E63946;
+  --success-color: #38B000;
+  --text-main: #FFFFFF;
+  --text-muted: #E0AAFF;
+  --gold: #FFD000;
+  
+  --btn-grad: linear-gradient(135deg, #3A0CA3, #7209B7);
+  --btn-grad-hover: linear-gradient(135deg, #7209B7, #9D4EDD);
+}
+
+/* Theme: Sunshine Citrus */
+[data-theme="sunshine_citrus"] {
+  --bg-gradient: radial-gradient(circle at 50% 20%, #4a2800, #170a00 85%);
+  --surface-bg: rgba(255, 183, 3, 0.1);
+  --surface-border: rgba(251, 133, 0, 0.3);
+  --surface-hover: rgba(251, 133, 0, 0.2);
+  --card-bg: rgba(45, 20, 5, 0.9);
+  --card-border: rgba(251, 133, 0, 0.45);
+  
+  --primary-color: #FB8500;
+  --primary-glow: rgba(251, 133, 0, 0.5);
+  --secondary-color: #FFB703;
+  --accent-color: #E63946;
+  --danger-color: #D90429;
+  --success-color: #70E000;
+  --text-main: #FFFDF0;
+  --text-muted: #FFE8D6;
+  --gold: #FFD166;
+  
+  --btn-grad: linear-gradient(135deg, #FB8500, #E63946);
+  --btn-grad-hover: linear-gradient(135deg, #FFB703, #FB8500);
+}
+
+/* Theme: Sakura Orchard */
+[data-theme="sakura_garden"] {
+  --bg-gradient: radial-gradient(circle at 50% 20%, #3d202b, #12090e 85%);
+  --surface-bg: rgba(255, 181, 167, 0.12);
+  --surface-border: rgba(255, 181, 167, 0.3);
+  --surface-hover: rgba(255, 181, 167, 0.22);
+  --card-bg: rgba(48, 22, 33, 0.9);
+  --card-border: rgba(252, 213, 206, 0.4);
+  
+  --primary-color: #FFB5A7;
+  --primary-glow: rgba(255, 181, 167, 0.5);
+  --secondary-color: #FCD5CE;
+  --accent-color: #98D8C8;
+  --danger-color: #E63946;
+  --success-color: #52B788;
+  --text-main: #FFF5F5;
+  --text-muted: #F8EDEB;
+  --gold: #FFD166;
+  
+  --btn-grad: linear-gradient(135deg, #D88373, #FFB5A7);
+  --btn-grad-hover: linear-gradient(135deg, #E29578, #FFDDD2);
+}

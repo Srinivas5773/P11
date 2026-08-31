@@ -1,0 +1,24 @@
+{
+  "name": "fruitquest-arcade-adventure",
+  "version": "1.0.0",
+  "description": "FruitQuest - The Ultimate Fruit Guessing & Arcade Adventure Web Application",
+  "main": "js/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node -e \"import('http').then(({createServer}) => createServer((req, res) => { import('fs').then(({createReadStream, existsSync}) => { let p = req.url === '/' ? 'index.html' : req.url.slice(1); if (existsSync(p)) createReadStream(p).pipe(res); else { res.statusCode = 404; res.end('Not Found'); } }); }).listen(3000, () => console.log('FruitQuest running at http://localhost:3000'));)\"",
+    "test": "node --test tests/*.test.js",
+    "build": "node build_full_database.js"
+  },
+  "keywords": [
+    "game",
+    "arcade",
+    "quiz",
+    "fruits",
+    "svg",
+    "canvas",
+    "webaudio"
+  ],
+  "author": "FruitQuest Team",
+  "license": "UNLICENSED",
+  "private": true
+}

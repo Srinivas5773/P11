@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="default">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FruitQuest - The Ultimate Fruit Guessing & Arcade Adventure</title>
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/themes.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+  <!-- Fullscreen Canvas for Particles & Confetti -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Sticky App Navigation Header -->
+  <header class="app-header">
+    <div class="brand-logo btn-back-menu">
+      <span class="brand-icon">🍓</span>
+      <span>FruitQuest</span>
+    </div>
+
+    <div class="header-controls">
+      <div class="coins-pill">
+        <span>🪙</span>
+        <span class="coins-counter-val">100</span>
+      </div>
+
+      <button id="btn-sound-toggle" class="btn-icon" title="Toggle Sound FX (Key: M)">🔊</button>
+      <button id="btn-music-toggle" class="btn-icon" title="Toggle Synth BGM">🎵 Off</button>
+      <button class="btn-icon" data-nav-screen="screen-fruitdex" title="FruitDex Encyclopedia">📖 Dex</button>
+      <button class="btn-icon" data-nav-screen="screen-shop" title="Shop & Themes">🛒 Shop</button>
+    </div>
+  </header>
+
+  <!-- Main Viewport Router -->
+  <main class="app-main">
+
+    <!-- ================= 1. MAIN MENU SCREEN ================= -->
+    <section id="screen-menu" class="game-screen active">
+      <div class="hero-banner">
+        <h1 class="hero-title">🍇 FruitQuest Adventure</h1>
+        <p class="hero-subtitle">Test your botanical knowledge! Guess exotic fruits, solve word scrambles, unmask dark silhouettes, and slice delicious fruits in arcade action.</p>
+      </div>
+
+      <!-- Daily Challenge Card -->
+      <div id="daily-challenge-card" class="daily-challenge-card">
+        <div>
+          <span class="daily-badge">🌟 DAILY CHALLENGE</span>
+          <div class="daily-title">Today's Mystery Quest</div>
+          <div id="daily-fruit-hint" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">Loading today's fruit...</div>
+        </div>
+        <div class="daily-reward">+300 🪙 BONUS</div>
+      </div>
+
+      <!-- Game Modes Selector Grid -->
+      <div class="modes-grid">
+        <!-- Mode 1: Classic Mode -->
+        <div class="mode-card" data-target-mode="classic">
+          <div class="mode-icon">🍎</div>
+          <div class="mode-name">Classic Adventure</div>
+          <div class="mode-desc">Fruits appear one by one! Pick the correct name among 4 options, maintain streaks, and use helpful lifelines.</div>
+          <div class="mode-tag">❤️ 3 Lives • 15s Timer</div>
+        </div>
+
+        <!-- Mode 2: Time Attack -->
+        <div class="mode-card" data-target-mode="time_attack">
+          <div class="mode-icon">⚡</div>
+          <div class="mode-name">Time Attack Frenzy</div>
+          <div class="mode-desc">60 seconds on the clock. Fast answers grant +2s bonus time! Wrong answers cost 3 seconds. High frenzy multipliers!</div>
+          <div class="mode-tag">⏱️ 60s Blitz • +2s Bonus</div>
+        </div>
+
+        <!-- Mode 3: Silhouette Mode -->
+        <div class="mode-card" data-target-mode="silhouette">
+          <div class="mode-icon">👥</div>
+          <div class="mode-name">Silhouette Mystery</div>
+          <div class="mode-desc">Identify fruits purely from their dark shadows! Double points if you can guess without peaking at color hints.</div>
+          <div class="mode-tag">🔍 2x Blind Bonus</div>
+        </div>
+
+        <!-- Mode 4: Word Scramble -->
+        <div class="mode-card" data-target-mode="word_scramble">
+          <div class="mode-icon">🔤</div>
+          <div class="mode-name">Word Scramble</div>
+          <div class="mode-desc">Unscramble the fruit's name by clicking letter tiles or typing directly with your keyboard!</div>
+          <div class="mode-tag">⌨️ Keyboard & Touch</div>
+        </div>
+
+        <!-- Mode 5: Fruit Slicer -->
+        <div class="mode-card" data-target-mode="fruit_slice">
+          <div class="mode-icon">⚔️</div>
+          <div class="mode-name">Arcade Slicer</div>
+          <div class="mode-desc">Swipe and slice fruits flying in the air! Dodge dangerous bombs and earn massive coin bonuses for the shop.</div>
+          <div class="mode-tag">🎮 Touch / Mouse Blade</div>
+        </div>
+      </div>
+
+      <!-- Quick Hub Navigation Buttons -->
+      <div class="hub-nav-grid">
+        <button class="hub-btn" data-nav-screen="screen-fruitdex">
+          <span>📖</span> FruitDex Encyclopedia
+        </button>
+        <button class="hub-btn" data-nav-screen="screen-shop">
+          <span>🎨</span> Themes & Power-Ups
+        </button>
+        <button class="hub-btn" data-nav-screen="screen-achievements">
+          <span>🏆</span> Quests & Achievements
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= 2. CLASSIC MODE SCREEN ================= -->
+    <section id="screen-classic" class="game-screen">
+      <div class="game-hud">
+        <button class="btn-icon btn-back-menu">← Menu</button>
+        <div class="hud-item">
+          <span class="hud-label">Score</span>
+          <span id="classic-hud-score" class="hud-value">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Streak</span>
+          <span id="classic-hud-streak" class="hud-value">0x</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Timer</span>
+          <span id="classic-timer-text" class="hud-value">15s</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Lives</span>
+          <div id="classic-hud-hearts">❤️❤️❤️</div>
+        </div>
+      </div>
+
+      <!-- Linear Timer Bar -->
+      <div class="timer-bar-container">
+        <div id="classic-timer-bar" class="timer-bar-fill"></div>
+      </div>
+
+      <!-- Botanical Clue Box (Shown on Lifeline Hint) -->
+      <div id="classic-clue-box" class="clue-box hidden"></div>
+
+      <!-- Fruit Visual Vector Presentation Card -->
+      <div class="fruit-stage-card">
+        <div id="classic-fruit-container"></div>
+      </div>
+
+      <!-- 4 Multiple Choice Option Buttons (Keys 1-4) -->
+      <div id="classic-options-container" class="options-grid"></div>
+
+      <!-- Lifelines Toolbar -->
+      <div class="lifelines-toolbar">
+        <button id="lifeline-5050" class="btn-lifeline" onclick="window.classicMode.useFiftyFifty()" title="Shortcut: F">
+          <span>✂️ 50/50</span>
+          <span class="lifeline-badge">3</span>
+        </button>
+        <button id="lifeline-hint" class="btn-lifeline" onclick="window.classicMode.useHint()" title="Shortcut: H">
+          <span>💡 Clue</span>
+          <span class="lifeline-badge">3</span>
+        </button>
+        <button id="lifeline-skip" class="btn-lifeline" onclick="window.classicMode.useSkip()" title="Shortcut: S">
+          <span>⏩ Skip</span>
+          <span class="lifeline-badge">2</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= 3. TIME ATTACK MODE SCREEN ================= -->
+    <section id="screen-timeattack" class="game-screen">
+      <div class="game-hud">
+        <button class="btn-icon btn-back-menu">← Menu</button>
+        <div class="hud-item">
+          <span class="hud-label">Score</span>
+          <span id="timeattack-hud-score" class="hud-value">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Streak</span>
+          <span id="timeattack-hud-streak" class="hud-value">0x</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Time Remaining</span>
+          <span id="timeattack-hud-clock" class="hud-value" style="color: var(--accent-color);">60s</span>
+        </div>
+      </div>
+
+      <div class="timer-bar-container">
+        <div id="timeattack-timer-bar" class="timer-bar-fill"></div>
+      </div>
+
+      <div class="fruit-stage-card">
+        <div id="timeattack-fruit-container"></div>
+      </div>
+
+      <div id="timeattack-options-container" class="options-grid"></div>
+    </section>
+
+    <!-- ================= 4. SILHOUETTE MYSTERY SCREEN ================= -->
+    <section id="screen-silhouette" class="game-screen">
+      <div class="game-hud">
+        <button class="btn-icon btn-back-menu">← Menu</button>
+        <div class="hud-item">
+          <span class="hud-label">Score</span>
+          <span id="silhouette-hud-score" class="hud-value">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Streak</span>
+          <span id="silhouette-hud-streak" class="hud-value">0x</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Lives</span>
+          <div id="silhouette-hud-hearts">❤️❤️❤️</div>
+        </div>
+      </div>
+
+      <div class="fruit-stage-card">
+        <div id="silhouette-fruit-container"></div>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 1.2rem;">
+        <button id="btn-reveal-silhouette-hint" class="btn-lifeline" onclick="window.silhouetteMode.revealHint()" style="margin: 0 auto;">
+          🔍 Reveal Color Hint (-50 pts)
+        </button>
+      </div>
+
+      <div id="silhouette-options-container" class="options-grid"></div>
+    </section>
+
+    <!-- ================= 5. WORD SCRAMBLE SCREEN ================= -->
+    <section id="screen-scramble" class="game-screen">
+      <div class="game-hud">
+        <button class="btn-icon btn-back-menu">← Menu</button>
+        <div class="hud-item">
+          <span class="hud-label">Score</span>
+          <span id="scramble-hud-score" class="hud-value">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Lives</span>
+          <div id="scramble-hud-hearts">❤️❤️❤️</div>
+        </div>
+      </div>
+
+      <div class="fruit-stage-card">
+        <div id="scramble-fruit-container"></div>
+      </div>
+
+      <!-- Target spelling slots -->
+      <div id="scramble-answer-slots" class="scramble-slots"></div>
+
+      <!-- Scrambled Letter Tiles Pool -->
+      <div id="scramble-letters-pool" class="scramble-pool"></div>
+
+      <div class="scramble-controls">
+        <button class="btn-lifeline" onclick="window.wordScrambleMode.shufflePool()">🔀 Shuffle</button>
+        <button class="btn-lifeline" onclick="window.wordScrambleMode.useScrambleHint()">💡 Next Letter</button>
+        <button class="btn-lifeline" onclick="window.wordScrambleMode.clearAll()">🗑️ Clear</button>
+      </div>
+    </section>
+
+    <!-- ================= 6. FRUIT SLICER ARCADE SCREEN ================= -->
+    <section id="screen-slicer" class="game-screen">
+      <div class="game-hud">
+        <button class="btn-icon btn-back-menu">← Menu</button>
+        <div class="hud-item">
+          <span class="hud-label">Score</span>
+          <span id="slicer-hud-score" class="hud-value">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Lives</span>
+          <div id="slicer-hud-hearts">❤️❤️❤️</div>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Instruction</span>
+          <span style="font-size: 0.85rem; color: var(--gold);">Swipe/drag blade across fruits! Dodge 💣</span>
+        </div>
+      </div>
+
+      <div class="slicer-container">
+        <canvas id="slicer-canvas"></canvas>
+      </div>
+    </section>
+
+    <!-- ================= 7. FRUITDEX ENCYCLOPEDIA SCREEN ================= -->
+    <section id="screen-fruitdex" class="game-screen">
+      <div class="dex-header">
+        <div>
+          <h2 style="font-size: 1.8rem; font-weight: 900;">📖 FruitDex Compendium</h2>
+          <span id="dex-unlocked-count" style="color: var(--text-muted); font-size: 0.9rem;">0 / 40 Discovered</span>
+        </div>
+        <input type="text" id="fruitdex-search" class="dex-search-input" placeholder="Search fruit by name, origin..." />
+      </div>
+
+      <div class="dex-filters">
+        <button class="dex-filter-btn active" data-category="all">All Fruits</button>
+        <button class="dex-filter-btn" data-category="Berry">Berries</button>
+        <button class="dex-filter-btn" data-category="Citrus">Citrus</button>
+        <button class="dex-filter-btn" data-category="Tropical">Tropical</button>
+        <button class="dex-filter-btn" data-category="Melon">Melons</button>
+        <button class="dex-filter-btn" data-category="Stone Fruit">Stone Fruits</button>
+        <button class="dex-filter-btn" data-category="Pome">Pomes</button>
+        <button class="dex-filter-btn" data-category="Exotic">Exotic & Rare</button>
+        <button class="dex-filter-btn" data-category="Superfruit">Superfruits</button>
+      </div>
+
+      <div id="fruitdex-grid" class="fruitdex-grid"></div>
+    </section>
+
+    <!-- ================= 8. SHOP & THEMES SCREEN ================= -->
+    <section id="screen-shop" class="game-screen">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.8rem; font-weight: 900;">🛒 Fruit Market & Theme Boutique</h2>
+        <p style="color: var(--text-muted);">Spend your hard-earned coins on custom game aesthetic themes and power-up lifeline bundles.</p>
+      </div>
+
+      <div id="shop-items-container"></div>
+    </section>
+
+    <!-- ================= 9. ACHIEVEMENTS SCREEN ================= -->
+    <section id="screen-achievements" class="game-screen">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.8rem; font-weight: 900;">🏆 Quests & Achievements</h2>
+        <p style="color: var(--text-muted);">Complete botanical milestones, maintain high combos, and claim rich coin bounties!</p>
+      </div>
+
+      <div id="achievements-grid" class="achievements-grid"></div>
+    </section>
+
+  </main>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- Modal: Detailed Fruit Botanical Card -->
+  <div id="fruit-detail-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <button id="close-fruit-detail" class="modal-close-btn">✕</button>
+      <div id="detail-fruit-art" class="detail-art-container"></div>
+      <h3 id="detail-fruit-name" class="detail-title">Apple</h3>
+      <div id="detail-fruit-scientific" class="detail-scientific">Malus domestica</div>
+
+      <div class="detail-meta-grid">
+        <div class="detail-meta-item">
+          <strong>Category</strong>
+          <span id="detail-fruit-category">Pome</span>
+        </div>
+        <div class="detail-meta-item">
+          <strong>Origin Region</strong>
+          <span id="detail-fruit-origin">Central Asia</span>
+        </div>
+        <div class="detail-meta-item" style="grid-column: span 2;">
+          <strong>Flavor Profile</strong>
+          <span id="detail-fruit-flavor">Sweet, crisp, slightly tart</span>
+        </div>
+      </div>
+
+      <h4 style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem;">Nutritional Value (per 100g)</h4>
+      <div class="detail-nutrition-grid">
+        <div class="nutri-box"><strong id="detail-nutri-cal">52 kcal</strong><span>Energy</span></div>
+        <div class="nutri-box"><strong id="detail-nutri-vitc">14%</strong><span>Vit C</span></div>
+        <div class="nutri-box"><strong id="detail-nutri-fiber">2.4g</strong><span>Fiber</span></div>
+        <div class="nutri-box"><strong id="detail-nutri-sugar">10g</strong><span>Sugar</span></div>
+        <div class="nutri-box"><strong id="detail-nutri-pot">107mg</strong><span>Potassium</span></div>
+      </div>
+
+      <div class="detail-fact-card">
+        <strong>💡 Botanical Trivia:</strong>
+        <p id="detail-fruit-fact" style="margin-top: 0.3rem;">Fun fact goes here...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Game Over / Victory Summary -->
+  <div id="game-over-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="gameover-header">
+        <div id="gameover-newhigh-banner" class="newhigh-banner hidden">🎉 NEW HIGH SCORE RECORD!</div>
+        <h2 id="gameover-title" style="font-size: 2rem; font-weight: 900;">🎮 GAME OVER</h2>
+        <div id="gameover-modename" style="color: var(--text-muted); font-size: 1.1rem; margin-top: 0.3rem;">Classic Adventure</div>
+      </div>
+
+      <div class="gameover-stats-grid">
+        <div class="gameover-stat-box">
+          <div class="gameover-stat-label">Final Score</div>
+          <div id="gameover-score" class="gameover-stat-val" style="color: var(--primary-color);">0</div>
+        </div>
+        <div class="gameover-stat-box">
+          <div class="gameover-stat-label">Best Record</div>
+          <div id="gameover-highscore" class="gameover-stat-val" style="color: var(--gold);">0</div>
+        </div>
+        <div class="gameover-stat-box">
+          <div class="gameover-stat-label">Correct Answers</div>
+          <div id="gameover-correct" class="gameover-stat-val">0 / 0</div>
+        </div>
+        <div class="gameover-stat-box">
+          <div class="gameover-stat-label">Accuracy</div>
+          <div id="gameover-accuracy" class="gameover-stat-val">0%</div>
+        </div>
+        <div class="gameover-stat-box">
+          <div class="gameover-stat-label">Max Streak</div>
+          <div id="gameover-streak" class="gameover-stat-val">0x</div>
+        </div>
+        <div class="gameover-stat-box">
+          <div class="gameover-stat-label">Coins Bounty</div>
+          <div id="gameover-coins" class="gameover-stat-val" style="color: var(--gold);">+0 🪙</div>
+        </div>
+      </div>
+
+      <div class="gameover-actions">
+        <button id="btn-gameover-playagain" class="btn-primary">🔄 Play Again</button>
+        <button id="btn-gameover-menu" class="btn-secondary">🏠 Main Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Achievement Toast Notifications Container -->
+  <div id="achievement-toast-container"></div>
+
+  <!-- JavaScript Modules (Zero External CDNs, Zero API Keys, 100% Offline Compatible) -->
+  <script src="js/data/fruits.js"></script>
+  <script src="js/data/fruits_master_db.js"></script>
+  <script src="js/data/trivia_bank.js"></script>
+  <script src="js/data/campaign_stages.js"></script>
+  <script src="js/data/localization_matrix.js"></script>
+  <script src="js/engine/synth_tracks.js"></script>
+  <script src="js/engine/audio.js"></script>
+  <script src="js/engine/particles.js"></script>
+  <script src="js/engine/render.js"></script>
+  <script src="js/systems/storage.js"></script>
+  <script src="js/systems/achievements.js"></script>
+  <script src="js/systems/encyclopedia.js"></script>
+  <script src="js/systems/shop.js"></script>
+  <script src="js/modes/classic.js"></script>
+  <script src="js/modes/time_attack.js"></script>
+  <script src="js/modes/silhouette.js"></script>
+  <script src="js/modes/word_scramble.js"></script>
+  <script src="js/modes/fruit_slice.js"></script>
+  <script src="js/modes/campaign.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
