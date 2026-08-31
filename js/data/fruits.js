@@ -1,0 +1,755 @@
+/**
+ * FruitQuest - Ultimate Fruit Compendium Database
+ * 40+ Detailed Fruit Profiles with vector rendering metadata, botanical info,
+ * trivia, flavor descriptions, and nutritional facts.
+ * 100% Client-side, Zero external dependencies or API keys.
+ */
+
+const FRUITS_DATABASE = [
+  // --- COMMON & POPULAR FRUITS (EASY) ---
+  {
+    id: "apple",
+    name: "Apple",
+    scientificName: "Malus domestica",
+    category: "Pome",
+    difficulty: "easy",
+    emoji: "🍎",
+    origin: "Central Asia (Kazakhstan)",
+    flavor: "Crisp, sweet, slightly tart",
+    colors: { primary: "#E63946", secondary: "#D90429", stem: "#6F4E37", leaf: "#52B788", glow: "rgba(230, 57, 70, 0.4)" },
+    nutrition: { calories: 52, vitaminC: "14%", fiber: "2.4g", sugar: "10g", potassium: "107mg" },
+    funFact: "There are over 7,500 varieties of apples in the world! If you ate a new variety each day, it would take over 20 years to try them all.",
+    shape: { type: "apple", width: 140, height: 140, shine: true, leafCount: 1, indentation: true }
+  },
+  {
+    id: "banana",
+    name: "Banana",
+    scientificName: "Musa acuminata",
+    category: "Tropical",
+    difficulty: "easy",
+    emoji: "🍌",
+    origin: "Southeast Asia",
+    flavor: "Sweet, creamy, rich in starch",
+    colors: { primary: "#FFE135", secondary: "#F4C430", stem: "#5C4033", leaf: "#70E000", glow: "rgba(255, 225, 53, 0.4)" },
+    nutrition: { calories: 89, vitaminC: "10%", fiber: "2.6g", sugar: "12g", potassium: "358mg" },
+    funFact: "Botanically speaking, bananas are giant berries that grow on massive herbaceous plants, not trees! They are also naturally slightly radioactive due to potassium.",
+    shape: { type: "crescent", width: 150, height: 130, curvature: 0.6, tipDark: true }
+  },
+  {
+    id: "orange",
+    name: "Orange",
+    scientificName: "Citrus × sinensis",
+    category: "Citrus",
+    difficulty: "easy",
+    emoji: "🍊",
+    origin: "Southern China / Southeast Asia",
+    flavor: "Zesty, juicy, tangy sweet",
+    colors: { primary: "#FF7B00", secondary: "#FF5400", stem: "#386641", leaf: "#38B000", glow: "rgba(255, 123, 0, 0.4)" },
+    nutrition: { calories: 47, vitaminC: "88%", fiber: "2.4g", sugar: "9g", potassium: "181mg" },
+    funFact: "The color 'orange' was named after the fruit in the 16th century! Before that, the hue was simply called 'yellow-red'.",
+    shape: { type: "circle", width: 140, height: 140, textured: true, pores: true, leafCount: 2 }
+  },
+  {
+    id: "strawberry",
+    name: "Strawberry",
+    scientificName: "Fragaria × ananassa",
+    category: "Berry",
+    difficulty: "easy",
+    emoji: "🍓",
+    origin: "France (hybrid of Americas)",
+    flavor: "Aromatic, juicy, bright sweet-tart",
+    colors: { primary: "#FF0054", secondary: "#D90429", seeds: "#FFDE59", leaf: "#007F5F", glow: "rgba(255, 0, 84, 0.4)" },
+    nutrition: { calories: 32, vitaminC: "98%", fiber: "2.0g", sugar: "4.9g", potassium: "153mg" },
+    funFact: "Strawberries are the only fruit that wear their seeds on the outside! An average strawberry has about 200 external seeds.",
+    shape: { type: "heart_tapered", width: 130, height: 140, seedPattern: "grid", topCrown: true }
+  },
+  {
+    id: "watermelon",
+    name: "Watermelon",
+    scientificName: "Citrullus lanatus",
+    category: "Melon",
+    difficulty: "easy",
+    emoji: "🍉",
+    origin: "Northeastern Africa",
+    flavor: "Refreshing, crisp, ultra-hydrating sweet",
+    colors: { primary: "#FF3366", secondary: "#2D6A4F", rind: "#74C69D", seeds: "#1B1B1B", glow: "rgba(255, 51, 102, 0.4)" },
+    nutrition: { calories: 30, vitaminC: "14%", fiber: "0.4g", sugar: "6g", potassium: "112mg" },
+    funFact: "Watermelon is 92% water! In ancient times, travelers used watermelons as organic canteens to transport potable liquid.",
+    shape: { type: "wedge", width: 150, height: 130, rindStripe: true, seedSpots: true }
+  },
+  {
+    id: "grape",
+    name: "Grape",
+    scientificName: "Vitis vinifera",
+    category: "Berry",
+    difficulty: "easy",
+    emoji: "🍇",
+    origin: "Middle East / Mediterranean",
+    flavor: "Juicy, bursting, floral honey sweetness",
+    colors: { primary: "#7209B7", secondary: "#560BAD", stem: "#6F4E37", leaf: "#38B000", glow: "rgba(114, 9, 183, 0.4)" },
+    nutrition: { calories: 69, vitaminC: "6%", fiber: "0.9g", sugar: "16g", potassium: "191mg" },
+    funFact: "Grapes have been cultivated for over 8,000 years! If you put a grape in the microwave, it generates plasma sparks due to electromagnetic resonance.",
+    shape: { type: "bunch", width: 130, height: 150, count: 12, vineSpiral: true }
+  },
+  {
+    id: "pineapple",
+    name: "Pineapple",
+    scientificName: "Ananas comosus",
+    category: "Tropical",
+    difficulty: "easy",
+    emoji: "🍍",
+    origin: "South America (Parana Basin)",
+    flavor: "Tropical, vibrant sweet-acidic punch",
+    colors: { primary: "#FAA307", secondary: "#D00000", crown: "#2D6A4F", pattern: "#E85D04", glow: "rgba(250, 163, 7, 0.4)" },
+    nutrition: { calories: 50, vitaminC: "79%", fiber: "1.4g", sugar: "10g", potassium: "109mg" },
+    funFact: "A pineapple takes almost 3 years to grow a single fruit! It contains bromelain, an enzyme that actually digests protein, making your tongue tingle.",
+    shape: { type: "cylinder_cone", width: 130, height: 160, diamondMesh: true, spikyCrown: true }
+  },
+  {
+    id: "mango",
+    name: "Mango",
+    scientificName: "Mangifera indica",
+    category: "Tropical",
+    difficulty: "easy",
+    emoji: "🥭",
+    origin: "South Asia (India & Myanmar)",
+    flavor: "Rich, luscious, floral, velvety sweet",
+    colors: { primary: "#FFB703", secondary: "#FB8500", blush: "#D90429", stem: "#603808", glow: "rgba(255, 183, 3, 0.4)" },
+    nutrition: { calories: 60, vitaminC: "60%", fiber: "1.6g", sugar: "14g", potassium: "168mg" },
+    funFact: "Known as the 'King of Fruits' in India, mangoes are culturally sacred and the national fruit of India, the Philippines, and Pakistan.",
+    shape: { type: "kidney_oval", width: 140, height: 140, gradientBlush: true }
+  },
+  {
+    id: "lemon",
+    name: "Lemon",
+    scientificName: "Citrus limon",
+    category: "Citrus",
+    difficulty: "easy",
+    emoji: "🍋",
+    origin: "Northeast India & Northern Myanmar",
+    flavor: "Sharply sour, intensely citrusy, zesty",
+    colors: { primary: "#FFEE32", secondary: "#FFD100", leaf: "#40916C", tip: "#E9D8A6", glow: "rgba(255, 238, 50, 0.4)" },
+    nutrition: { calories: 29, vitaminC: "88%", fiber: "2.8g", sugar: "2.5g", potassium: "138mg" },
+    funFact: "In the 18th-century British Royal Navy, sailors were required to drink lemon juice daily to prevent scurvy, leading to their nickname 'Limeys'.",
+    shape: { type: "ellipse_pointed", width: 140, height: 120, pointedEnds: true, pores: true }
+  },
+  {
+    id: "cherry",
+    name: "Cherry",
+    scientificName: "Prunus avium",
+    category: "Stone Fruit",
+    difficulty: "easy",
+    emoji: "🍒",
+    origin: "Anatolia (Modern Turkey)",
+    flavor: "Sweet-tart, deep berry nectar",
+    colors: { primary: "#9E0059", secondary: "#FF0054", stem: "#588157", pair: true, glow: "rgba(158, 0, 89, 0.4)" },
+    nutrition: { calories: 63, vitaminC: "12%", fiber: "2.1g", sugar: "13g", potassium: "222mg" },
+    funFact: "Cherries belong to the rose family (Rosaceae)! A typical cherry tree yields around 7,000 cherries each harvest season.",
+    shape: { type: "twin_berries", width: 140, height: 140, joinedStem: true, shineGloss: true }
+  },
+  {
+    id: "peach",
+    name: "Peach",
+    scientificName: "Prunus persica",
+    category: "Stone Fruit",
+    difficulty: "easy",
+    emoji: "🍑",
+    origin: "Northwest China",
+    flavor: "Floral, honeyed, velvety, juicy sweet",
+    colors: { primary: "#FF9E80", secondary: "#FF6E40", blush: "#D81159", leaf: "#2D6A4F", glow: "rgba(255, 158, 128, 0.4)" },
+    nutrition: { calories: 39, vitaminC: "11%", fiber: "1.5g", sugar: "8.4g", potassium: "190mg" },
+    funFact: "In Chinese mythology, peaches symbolize immortality and long life. The peach was believed to be consumed by the immortals in the celestial gardens.",
+    shape: { type: "cleft_sphere", width: 140, height: 140, verticalCleft: true, softGradient: true }
+  },
+  {
+    id: "pear",
+    name: "Pear",
+    scientificName: "Pyrus communis",
+    category: "Pome",
+    difficulty: "easy",
+    emoji: "🍐",
+    origin: "Coastal and mildly temperate Europe and Western Asia",
+    flavor: "Delicate, buttery, mellow sweet, grainy texture",
+    colors: { primary: "#AACC00", secondary: "#80B918", stem: "#6F4E37", leaf: "#2B9348", glow: "rgba(170, 204, 0, 0.4)" },
+    nutrition: { calories: 57, vitaminC: "7%", fiber: "3.1g", sugar: "10g", potassium: "116mg" },
+    funFact: "Pears were called 'gift of the gods' by Homer in the Odyssey. Their flesh contains stone cells (sclereids) giving them their signature gritty texture.",
+    shape: { type: "pyriform", width: 130, height: 150, teardropTop: true, wideBase: true }
+  },
+  {
+    id: "kiwi",
+    name: "Kiwi",
+    scientificName: "Actinidia deliciosa",
+    category: "Exotic",
+    difficulty: "easy",
+    emoji: "🥝",
+    origin: "Central and Eastern China",
+    flavor: "Tangy sweet, bright green acidity with tiny crunch",
+    colors: { primary: "#70E000", secondary: "#38B000", skin: "#6F4E37", center: "#E9F5DB", seeds: "#1B1B1B", glow: "rgba(112, 224, 0, 0.4)" },
+    nutrition: { calories: 61, vitaminC: "155%", fiber: "3.0g", sugar: "9g", potassium: "312mg" },
+    funFact: "Originally called 'Chinese Gooseberry', New Zealand growers rebranded it 'Kiwifruit' in 1959 after their national flightless bird!",
+    shape: { type: "sliced_circle", width: 140, height: 140, seedRays: true, whiteCore: true }
+  },
+  {
+    id: "coconut",
+    name: "Coconut",
+    scientificName: "Cocos nucifera",
+    category: "Tropical",
+    difficulty: "easy",
+    emoji: "🥥",
+    origin: "Indo-Pacific coasts",
+    flavor: "Nutty, creamy, mild sweet water and meat",
+    colors: { primary: "#4A3525", secondary: "#342217", interior: "#FFFFFF", shellEyes: "#1F1209", glow: "rgba(74, 53, 37, 0.4)" },
+    nutrition: { calories: 354, vitaminC: "5%", fiber: "9.0g", sugar: "6.2g", potassium: "356mg" },
+    funFact: "Coconuts are exceptional floating seeds that can travel thousands of nautical miles across open ocean currents and still germinate upon washing ashore!",
+    shape: { type: "cracked_nut", width: 140, height: 140, fiberHair: true, whiteRim: true }
+  },
+  {
+    id: "avocado",
+    name: "Avocado",
+    scientificName: "Persea americana",
+    category: "Stone Fruit",
+    difficulty: "easy",
+    emoji: "🥑",
+    origin: "Mesoamerica (South-Central Mexico)",
+    flavor: "Rich, buttery, nutty, velvety smooth",
+    colors: { primary: "#B7E4C7", secondary: "#52B788", skin: "#1B4332", pit: "#6F4E37", glow: "rgba(82, 183, 136, 0.4)" },
+    nutrition: { calories: 160, vitaminC: "17%", fiber: "6.7g", sugar: "0.7g", potassium: "485mg" },
+    funFact: "Avocados are single-seeded berries! They have more potassium than bananas and rely on healthy monounsaturated oleic fats.",
+    shape: { type: "cut_pear", width: 130, height: 150, roundPit: true, paleFlesh: true }
+  },
+
+  // --- MODERATE FRUITS (MEDIUM) ---
+  {
+    id: "pomegranate",
+    name: "Pomegranate",
+    scientificName: "Punica granatum",
+    category: "Exotic",
+    difficulty: "medium",
+    emoji: "🫐",
+    origin: "Modern-day Iran to Northern India",
+    flavor: "Deep tart-sweet, vibrant ruby arils",
+    colors: { primary: "#A61C1C", secondary: "#6B0F1A", aril: "#E01E37", crown: "#3D0C11", glow: "rgba(166, 28, 28, 0.4)" },
+    nutrition: { calories: 83, vitaminC: "17%", fiber: "4.0g", sugar: "14g", potassium: "236mg" },
+    funFact: "Pomegranates feature heavily in Greek mythology in the story of Persephone and the underworld. A single fruit contains between 200 to 1,400 jewel-like seeds (arils).",
+    shape: { type: "crenellated_sphere", width: 140, height: 145, calyxCrown: true, arilClusters: true }
+  },
+  {
+    id: "papaya",
+    name: "Papaya",
+    scientificName: "Carica papaya",
+    category: "Tropical",
+    difficulty: "medium",
+    emoji: "🥭",
+    origin: "Mesoamerica (Southern Mexico & Central America)",
+    flavor: "Musky, tropical sweet, melon-like",
+    colors: { primary: "#FF7B00", secondary: "#E85D04", skin: "#70E000", seeds: "#1B1B1B", glow: "rgba(255, 123, 0, 0.4)" },
+    nutrition: { calories: 43, vitaminC: "103%", fiber: "1.7g", sugar: "7.8g", potassium: "182mg" },
+    funFact: "Papayas contain an enzyme called papain, which breaks down tough meat fibers and has been used for thousands of years as a natural meat tenderizer.",
+    shape: { type: "elongated_pear", width: 130, height: 160, caviarSeeds: true, orangeCavity: true }
+  },
+  {
+    id: "fig",
+    name: "Fig",
+    scientificName: "Ficus carica",
+    category: "Exotic",
+    difficulty: "medium",
+    emoji: "🫒",
+    origin: "Mediterranean and Western Asia",
+    flavor: "Honeyed, jammy, subtle crunch from tiny seeds",
+    colors: { primary: "#4A0E4E", secondary: "#2A0845", interior: "#D81159", stem: "#386641", glow: "rgba(74, 14, 78, 0.4)" },
+    nutrition: { calories: 74, vitaminC: "3%", fiber: "2.9g", sugar: "16g", potassium: "232mg" },
+    funFact: "A fig is not technically a fruit, but an inverted inflorescence (a cluster of many hundreds of flowers blooming inside a closed vessel called a syconium)!",
+    shape: { type: "teardrop_bulb", width: 130, height: 140, wrinkledSkin: true, reddishInterior: true }
+  },
+  {
+    id: "blueberry",
+    name: "Blueberry",
+    scientificName: "Vaccinium corymbosum",
+    category: "Berry",
+    difficulty: "medium",
+    emoji: "🫐",
+    origin: "North America",
+    flavor: "Sweet, subtle floral tang, juicy burst",
+    colors: { primary: "#3A0CA3", secondary: "#1F005B", crown: "#4CC9F0", bloom: "#7209B7", glow: "rgba(58, 12, 163, 0.4)" },
+    nutrition: { calories: 57, vitaminC: "16%", fiber: "2.4g", sugar: "9.9g", potassium: "77mg" },
+    funFact: "Blueberries have a natural silvery-white waxy protective coating called 'bloom', which acts as an organic barrier against moisture loss and bacteria.",
+    shape: { type: "calyx_sphere", width: 120, height: 120, starCalyx: true, frostWax: true }
+  },
+  {
+    id: "raspberry",
+    name: "Raspberry",
+    scientificName: "Rubus idaeus",
+    category: "Berry",
+    difficulty: "medium",
+    emoji: "🫐",
+    origin: "Europe and Northern Asia",
+    flavor: "Delicate, velvety, tangy-sweet floral note",
+    colors: { primary: "#E63946", secondary: "#C1121F", drupelets: "#FF4D6D", leaf: "#52B788", glow: "rgba(230, 57, 70, 0.4)" },
+    nutrition: { calories: 52, vitaminC: "44%", fiber: "6.5g", sugar: "4.4g", potassium: "151mg" },
+    funFact: "Raspberries are aggregate fruits composed of around 100 individual tiny drupelets, each containing its own minute seed around a hollow core.",
+    shape: { type: "drupelet_cone", width: 125, height: 135, drupeletCluster: true, hollowBase: true }
+  },
+  {
+    id: "blackberry",
+    name: "Blackberry",
+    scientificName: "Rubus fruticosus",
+    category: "Berry",
+    difficulty: "medium",
+    emoji: "🫐",
+    origin: "Northern temperate regions (Eurasia)",
+    flavor: "Earthy, bold, deep tartness with rich sweetness",
+    colors: { primary: "#1E1E24", secondary: "#0B090A", sheen: "#43281C", glow: "rgba(30, 30, 36, 0.4)" },
+    nutrition: { calories: 43, vitaminC: "35%", fiber: "5.3g", sugar: "4.9g", potassium: "162mg" },
+    funFact: "Unlike raspberries, when you pick a blackberry, the central receptacle (torus) stays attached inside the fruit rather than remaining on the plant stem.",
+    shape: { type: "glossy_drupelets", width: 125, height: 135, shinyBeads: true }
+  },
+  {
+    id: "plum",
+    name: "Plum",
+    scientificName: "Prunus domestica",
+    category: "Stone Fruit",
+    difficulty: "medium",
+    emoji: "🟣",
+    origin: "Caucasus Mountains / Eastern Europe",
+    flavor: "Succulent, sweet flesh with a mouth-puckering skin",
+    colors: { primary: "#5A189A", secondary: "#3C096C", bloom: "#9D4EDD", leaf: "#38B000", glow: "rgba(90, 24, 154, 0.4)" },
+    nutrition: { calories: 46, vitaminC: "16%", fiber: "1.4g", sugar: "9.9g", potassium: "157mg" },
+    funFact: "Plums were one of the first fruits domesticated by humans. Dried plums are famously known as prunes and are revered for their digestive wellness.",
+    shape: { type: "oval_drupe", width: 130, height: 140, grooveLine: true, frostyGlow: true }
+  },
+  {
+    id: "apricot",
+    name: "Apricot",
+    scientificName: "Prunus armeniaca",
+    category: "Stone Fruit",
+    difficulty: "medium",
+    emoji: "🍑",
+    origin: "Armenia / Central Asia / China",
+    flavor: "Musky, golden-sweet, velvety tart edge",
+    colors: { primary: "#FB8500", secondary: "#FFB703", blush: "#E85D04", leaf: "#40916C", glow: "rgba(251, 133, 0, 0.4)" },
+    nutrition: { calories: 48, vitaminC: "17%", fiber: "2.0g", sugar: "9.2g", potassium: "259mg" },
+    funFact: "Astronauts on Apollo missions ate dried apricots in space because of their exceptional shelf-life, energy density, and high potassium content.",
+    shape: { type: "cleft_drupe", width: 125, height: 130, velvetTexture: true, middleSeam: true }
+  },
+  {
+    id: "guava",
+    name: "Guava",
+    scientificName: "Psidium guajava",
+    category: "Tropical",
+    difficulty: "medium",
+    emoji: "🍈",
+    origin: "Tropical Central America & the Caribbean",
+    flavor: "Intensely fragrant, floral blend of strawberry and pear",
+    colors: { primary: "#52B788", secondary: "#2D6A4F", flesh: "#FF4D6D", seeds: "#F4A261", glow: "rgba(82, 183, 136, 0.4)" },
+    nutrition: { calories: 68, vitaminC: "381%", fiber: "5.4g", sugar: "8.9g", potassium: "417mg" },
+    funFact: "Guavas contain more than 4 times the Vitamin C of an orange! Their aroma is so potent that a single ripe guava can perfume an entire kitchen room.",
+    shape: { type: "round_coronet", width: 135, height: 135, pinkSlice: true, tinyCrown: true }
+  },
+  {
+    id: "passion_fruit",
+    name: "Passion Fruit",
+    scientificName: "Passiflora edulis",
+    category: "Tropical",
+    difficulty: "medium",
+    emoji: "🟣",
+    origin: "Southern Brazil through Paraguay to Northern Argentina",
+    flavor: "Explosively aromatic, tart, zesty, crunchy jelly",
+    colors: { primary: "#480CA8", secondary: "#3A0CA3", pulp: "#FAA307", seeds: "#1B1B1B", glow: "rgba(72, 12, 168, 0.4)" },
+    nutrition: { calories: 97, vitaminC: "50%", fiber: "10.4g", sugar: "11g", potassium: "348mg" },
+    funFact: "Named by Spanish Christian missionaries in South America who saw the Passion flower's intricate corona and petals as symbols of the Crucifixion.",
+    shape: { type: "wrinkled_orb", width: 130, height: 130, jellyPulps: true, blackSeeds: true }
+  },
+  {
+    id: "dragon_fruit",
+    name: "Dragon Fruit",
+    scientificName: "Selenicereus undatus (Pitaya)",
+    category: "Exotic",
+    difficulty: "medium",
+    emoji: "🐉",
+    origin: "Central & South America",
+    flavor: "Mildly sweet, refreshing, light kiwi-pear notes",
+    colors: { primary: "#FF007F", secondary: "#D90429", scales: "#70E000", flesh: "#FFFFFF", seeds: "#111111", glow: "rgba(255, 0, 127, 0.4)" },
+    nutrition: { calories: 60, vitaminC: "34%", fiber: "2.9g", sugar: "7.6g", potassium: "192mg" },
+    funFact: "Dragon fruits grow on climbing night-blooming cacti whose large fragrant flowers open for only one single night to be pollinated by moths and bats!",
+    shape: { type: "scaly_pitaya", width: 140, height: 160, flameScales: true, greenTips: true }
+  },
+  {
+    id: "cantaloupe",
+    name: "Cantaloupe",
+    scientificName: "Cucumis melo var. cantalupensis",
+    category: "Melon",
+    difficulty: "medium",
+    emoji: "🍈",
+    origin: "South Asia to Africa",
+    flavor: "Sweet, musky, floral, juicy orange nectar",
+    colors: { primary: "#F4A261", secondary: "#E76F51", netting: "#DDA15E", rim: "#52B788", glow: "rgba(244, 162, 97, 0.4)" },
+    nutrition: { calories: 34, vitaminC: "61%", fiber: "0.9g", sugar: "7.9g", potassium: "267mg" },
+    funFact: "Named after Cantalupo in Sabina, Italy, where the papal county estate introduced seeds imported from Armenia in the 16th century.",
+    shape: { type: "netted_melon", width: 140, height: 140, laceNetting: true, ribbedSegments: true }
+  },
+  {
+    id: "grapefruit",
+    name: "Grapefruit",
+    scientificName: "Citrus × paradisi",
+    category: "Citrus",
+    difficulty: "medium",
+    emoji: "🍊",
+    origin: "Barbados (Caribbean hybrid)",
+    flavor: "Pleasantly bitter, tangy-sweet, ruby juice",
+    colors: { primary: "#FF6B6B", secondary: "#EE5253", peel: "#FECA57", glow: "rgba(255, 107, 107, 0.4)" },
+    nutrition: { calories: 42, vitaminC: "52%", fiber: "1.6g", sugar: "6.9g", potassium: "135mg" },
+    funFact: "The grapefruit is an accidental natural hybrid between the Jamaican sweet orange and Indonesian pomelo, first documented in Barbados in 1750.",
+    shape: { type: "citrus_wheel", width: 140, height: 140, wheelSlices: true, pinkRuby: true }
+  },
+
+  // --- EXOTIC & CHALLENGING FRUITS (HARD) ---
+  {
+    id: "durian",
+    name: "Durian",
+    scientificName: "Durio zibethinus",
+    category: "Exotic",
+    difficulty: "hard",
+    emoji: "🍈",
+    origin: "Borneo and Sumatra (Southeast Asia)",
+    flavor: "Rich custard, hints of caramel, almond, onion, sherry",
+    colors: { primary: "#8B9A46", secondary: "#588157", spikes: "#344E41", custard: "#FFE66D", glow: "rgba(139, 154, 70, 0.4)" },
+    nutrition: { calories: 147, vitaminC: "33%", fiber: "3.8g", sugar: "20g", potassium: "436mg" },
+    funFact: "Known as the 'King of Fruits' in Southeast Asia, its sulfurous scent is so notorious that it is banned on public trains, airplanes, and hotels in Singapore!",
+    shape: { type: "thorn_armored", width: 140, height: 160, denseSpikes: true, yellowLobe: true }
+  },
+  {
+    id: "mangosteen",
+    name: "Mangosteen",
+    scientificName: "Garcinia mangostana",
+    category: "Exotic",
+    difficulty: "hard",
+    emoji: "🟣",
+    origin: "Sundaland (Southeast Asia)",
+    flavor: "Regal blend of peach, strawberry, vanilla, and lychee",
+    colors: { primary: "#4A0E2E", secondary: "#2B091B", calyx: "#588157", segments: "#FFFFFF", glow: "rgba(74, 14, 46, 0.4)" },
+    nutrition: { calories: 73, vitaminC: "12%", fiber: "1.8g", sugar: "15g", potassium: "48mg" },
+    funFact: "Queen Victoria supposedly offered a reward of 100 pounds sterling to anyone who could deliver her fresh mangosteens from the tropical colonies!",
+    shape: { type: "royal_orb", width: 135, height: 135, greenCrownFour: true, snowWhiteCloves: true }
+  },
+  {
+    id: "rambutan",
+    name: "Rambutan",
+    scientificName: "Nephelium lappaceum",
+    category: "Exotic",
+    difficulty: "hard",
+    emoji: "🔴",
+    origin: "Malaysia and Indonesia",
+    flavor: "Sweet, translucent, grape-like with a delicate floral hint",
+    colors: { primary: "#D90429", secondary: "#EF233C", hairs: "#70E000", glow: "rgba(217, 4, 41, 0.4)" },
+    nutrition: { calories: 68, vitaminC: "50%", fiber: "0.9g", sugar: "16g", potassium: "140mg" },
+    funFact: "The name rambutan comes from the Malay word 'rambut', which literally translates to 'hair', referring to the soft pliable spinterns covering the rind.",
+    shape: { type: "hairy_capsule", width: 135, height: 140, softHairs: true, neonTips: true }
+  },
+  {
+    id: "lychee",
+    name: "Lychee",
+    scientificName: "Litchi chinensis",
+    category: "Exotic",
+    difficulty: "hard",
+    emoji: "🍓",
+    origin: "Guangdong & Fujian Provinces, China",
+    flavor: "Floral, rose-perfumed, juicy sweetness",
+    colors: { primary: "#C1121F", secondary: "#780001", texture: "#FDF0D5", glow: "rgba(193, 18, 31, 0.4)" },
+    nutrition: { calories: 66, vitaminC: "119%", fiber: "1.3g", sugar: "15g", potassium: "171mg" },
+    funFact: "Chinese Emperor Xuanzong of the Tang Dynasty organized dedicated relay messenger horses to rush fresh lychees from southern provinces to his consort Yang Guifei!",
+    shape: { type: "bumpy_heart", width: 125, height: 130, pebbledRind: true }
+  },
+  {
+    id: "starfruit",
+    name: "Starfruit",
+    scientificName: "Averrhoa carambola",
+    category: "Exotic",
+    difficulty: "hard",
+    emoji: "⭐",
+    origin: "Tropical Southeast Asia",
+    flavor: "Crisp, tangy-sweet, citrusy apple-grape crunch",
+    colors: { primary: "#FFEE32", secondary: "#FFD100", ribs: "#70E000", glow: "rgba(255, 238, 50, 0.4)" },
+    nutrition: { calories: 31, vitaminC: "57%", fiber: "2.8g", sugar: "4g", potassium: "133mg" },
+    funFact: "When sliced crosswise, this 5-angled ribbed fruit forms perfect geometric five-pointed stars, making it famous for garnishes.",
+    shape: { type: "five_star", width: 140, height: 140, fivePoints: true, ribbedWings: true }
+  },
+  {
+    id: "jackfruit",
+    name: "Jackfruit",
+    scientificName: "Artocarpus heterophyllus",
+    category: "Tropical",
+    difficulty: "hard",
+    emoji: "🍈",
+    origin: "Western Ghats of India",
+    flavor: "Ripe tastes like Juicy Fruit gum (banana-pineapple); unripe mimics pulled pork",
+    colors: { primary: "#588157", secondary: "#3A5A40", pulp: "#FFB703", glow: "rgba(88, 129, 87, 0.4)" },
+    nutrition: { calories: 95, vitaminC: "23%", fiber: "1.5g", sugar: "19g", potassium: "448mg" },
+    funFact: "Jackfruit is the largest tree-borne fruit in the world, capable of reaching up to 120 pounds (55 kg) and 3 feet in length!",
+    shape: { type: "giant_studded", width: 140, height: 170, hexagonStuds: true, goldenBulbs: true }
+  },
+  {
+    id: "persimmon",
+    name: "Persimmon",
+    scientificName: "Diospyros kaki",
+    category: "Exotic",
+    difficulty: "hard",
+    emoji: "🍅",
+    origin: "East Asia (China, Japan, Korea)",
+    flavor: "Honeyed, spiced cinnamon, sweet jelly richness",
+    colors: { primary: "#FB5607", secondary: "#FF006E", calyx: "#2D6A4F", glow: "rgba(251, 86, 7, 0.4)" },
+    nutrition: { calories: 70, vitaminC: "11%", fiber: "3.6g", sugar: "13g", potassium: "161mg" },
+    funFact: "Its botanical name Diospyros translates to 'fruit of the gods' in Greek. In Japan, dried persimmons ('Hoshigaki') are massaged by hand into delicacies.",
+    shape: { type: "squat_tomato", width: 135, height: 130, fourLeafSepal: true, glossyOrange: true }
+  },
+  {
+    id: "tamarind",
+    name: "Tamarind",
+    scientificName: "Tamarindus indica",
+    category: "Exotic",
+    difficulty: "hard",
+    emoji: "🫘",
+    origin: "Tropical Africa / Madagascar",
+    flavor: "Intensely tangy, sour-sweet, rich tartaric paste",
+    colors: { primary: "#6F4E37", secondary: "#4A3525", pulp: "#8B4513", glow: "rgba(111, 78, 55, 0.4)" },
+    nutrition: { calories: 239, vitaminC: "6%", fiber: "5.1g", sugar: "38g", potassium: "628mg" },
+    funFact: "Tamarind is a key ingredient in authentic Worcestershire sauce, Pad Thai noodles, and Indian rasams and chutneys.",
+    shape: { type: "curved_pod", width: 150, height: 110, podSegments: true, woodyShell: true }
+  },
+  {
+    id: "kumquat",
+    name: "Kumquat",
+    scientificName: "Fortunella / Citrus japonica",
+    category: "Citrus",
+    difficulty: "hard",
+    emoji: "🍊",
+    origin: "South China",
+    flavor: "Sweet edible skin with an explosive sour-tangy juice center",
+    colors: { primary: "#FF9F1C", secondary: "#FFBF69", glow: "rgba(255, 159, 28, 0.4)" },
+    nutrition: { calories: 71, vitaminC: "73%", fiber: "6.5g", sugar: "9.4g", potassium: "186mg" },
+    funFact: "Kumquats are eaten whole, skin and all! Unlike standard citrus, the sweet essential oils are in the skin while the pulp inside is very tart.",
+    shape: { type: "mini_oval", width: 110, height: 125, oliveShape: true }
+  },
+  {
+    id: "physalis",
+    name: "Cape Gooseberry",
+    scientificName: "Physalis peruviana (Goldenberry)",
+    category: "Berry",
+    difficulty: "hard",
+    emoji: "🏮",
+    origin: "High-altitude Andes of Peru and Colombia",
+    flavor: "Bright tropical tang, citrus-tomato-pineapple notes",
+    colors: { primary: "#FFB703", secondary: "#FB8500", lantern: "#DDA15E", glow: "rgba(255, 183, 3, 0.4)" },
+    nutrition: { calories: 53, vitaminC: "18%", fiber: "4.9g", sugar: "6g", potassium: "248mg" },
+    funFact: "Encased in a delicate papery calyx that resembles a Chinese lantern, protecting the berry from pests and weather until harvest.",
+    shape: { type: "lantern_berry", width: 130, height: 140, paperHusk: true, goldCore: true }
+  },
+
+  // --- RARE & LEGENDARY SPECIMENS ---
+  {
+    id: "buddhas_hand",
+    name: "Buddha's Hand",
+    scientificName: "Citrus medica var. sarcodactylis",
+    category: "Citrus",
+    difficulty: "legendary",
+    emoji: "🖐️",
+    origin: "Lower Himalayas / Northeast India",
+    flavor: "Fragrant floral citrus zest, zero juice or pulp, sweet pith",
+    colors: { primary: "#FFEE32", secondary: "#FFD100", fingerEnds: "#70E000", glow: "rgba(255, 238, 50, 0.5)" },
+    nutrition: { calories: 20, vitaminC: "45%", fiber: "3.5g", sugar: "0g", potassium: "120mg" },
+    funFact: "The fruit splits into multiple fragrant finger-like segments resembling a praying Buddha's hand. It is commonly used as a temple offering and room perfumer.",
+    shape: { type: "fingered_citrus", width: 150, height: 160, tentacles: 7 }
+  },
+  {
+    id: "miracle_fruit",
+    name: "Miracle Berry",
+    scientificName: "Synsepalum dulcificum",
+    category: "Superfruit",
+    difficulty: "legendary",
+    emoji: "🍒",
+    origin: "West Africa",
+    flavor: "Mildly sweet berry, but makes ALL sour foods taste ultra-sweet for an hour!",
+    colors: { primary: "#D90429", secondary: "#9E2A2B", sheen: "#FFFFFF", glow: "rgba(217, 4, 41, 0.5)" },
+    nutrition: { calories: 30, vitaminC: "10%", fiber: "1.0g", sugar: "2g", potassium: "90mg" },
+    funFact: "Contains 'miraculin', a glycoprotein that binds to sweet taste receptors. When acidic sour foods (like lemons or vinegar) enter the mouth, it tricks receptors into tasting intense sweetness!",
+    shape: { type: "coffee_drupe", width: 110, height: 130, shinyRuby: true }
+  },
+  {
+    id: "black_sapote",
+    name: "Black Sapote",
+    scientificName: "Diospyros nigra (Chocolate Pudding Fruit)",
+    category: "Exotic",
+    difficulty: "legendary",
+    emoji: "🍫",
+    origin: "Eastern Mexico, Central America, and Colombia",
+    flavor: "Rich chocolate pudding texture, sweet caramel, date-like",
+    colors: { primary: "#2D6A4F", secondary: "#1B4332", pulp: "#2A1810", glow: "rgba(42, 24, 16, 0.5)" },
+    nutrition: { calories: 79, vitaminC: "320%", fiber: "3.4g", sugar: "13g", potassium: "340mg" },
+    funFact: "Famously dubbed the 'Chocolate Pudding Fruit' because its ripe deep-brown custard looks and tastes just like decadent chocolate mousse, but with 4x the Vitamin C of oranges!",
+    shape: { type: "sapote_cleft", width: 140, height: 140, chocoInterior: true }
+  },
+  {
+    id: "jabuticaba",
+    name: "Jabuticaba",
+    scientificName: "Plinia cauliflora (Brazilian Grape Tree)",
+    category: "Berry",
+    difficulty: "legendary",
+    emoji: "🟣",
+    origin: "Minas Gerais and São Paulo, Brazil",
+    flavor: "Sweet, tangy, aromatic, floral-grape wine flavor",
+    colors: { primary: "#10002B", secondary: "#240046", bark: "#582F0E", glow: "rgba(36, 0, 70, 0.5)" },
+    nutrition: { calories: 50, vitaminC: "38%", fiber: "2.1g", sugar: "11g", potassium: "150mg" },
+    funFact: "An extraordinary example of cauliflory: the purple berries grow directly out of the bark of the main tree trunk and large branches, creating an alien-like appearance!",
+    shape: { type: "trunk_berry", width: 130, height: 130, barkStem: true, deepIndigo: true }
+  },
+  {
+    id: "salak",
+    name: "Salak (Snake Fruit)",
+    scientificName: "Salacca zalacca",
+    category: "Exotic",
+    difficulty: "legendary",
+    emoji: "🐍",
+    origin: "Java and Sumatra, Indonesia",
+    flavor: "Sweet and acidic with a crisp dry apple-pineapple crunch",
+    colors: { primary: "#582F0E", secondary: "#3F1D0B", scales: "#7F4F24", glow: "rgba(88, 47, 14, 0.5)" },
+    nutrition: { calories: 82, vitaminC: "14%", fiber: "2.8g", sugar: "18g", potassium: "210mg" },
+    funFact: "Known as 'Snake Fruit' because its skin is covered in reddish-brown overlapping scales that look and feel uncannily like real reptile snakeskin.",
+    shape: { type: "snakeskin_taper", width: 130, height: 145, scaledTexture: true, garlicCloves: true }
+  },
+  {
+    id: "finger_lime",
+    name: "Finger Lime (Citrus Caviar)",
+    scientificName: "Citrus australasica",
+    category: "Citrus",
+    difficulty: "legendary",
+    emoji: "🫒",
+    origin: "Rainforests of Australia (QLD / NSW border)",
+    flavor: "Effervescent, popping pearls of intense tangy lime juice",
+    colors: { primary: "#386641", secondary: "#1B4332", pearls: "#FF70A6", glow: "rgba(255, 112, 166, 0.5)" },
+    nutrition: { calories: 30, vitaminC: "50%", fiber: "2.8g", sugar: "1.2g", potassium: "140mg" },
+    funFact: "Dubbed 'Citrus Caviar' by Michelin-star chefs because squeezing the finger-like fruit discharges thousands of crisp, jewel-like vesicle pearls that burst in your mouth.",
+    shape: { type: "finger_pod", width: 140, height: 120, caviarVesicles: true }
+  },
+  {
+    id: "horned_melon",
+    name: "Horned Melon (Kiwano)",
+    scientificName: "Cucumis metuliferus",
+    category: "Exotic",
+    difficulty: "legendary",
+    emoji: "🍈",
+    origin: "Kalahari Desert, Southern Africa",
+    flavor: "Gelatinous lime-green jelly tasting of cucumber, zucchini, and banana",
+    colors: { primary: "#FFB703", secondary: "#FB8500", horns: "#E85D04", jelly: "#70E000", glow: "rgba(255, 183, 3, 0.5)" },
+    nutrition: { calories: 44, vitaminC: "9%", fiber: "1.5g", sugar: "7.6g", potassium: "123mg" },
+    funFact: "Its otherworldly appearance with sharp horn-like spikes made it a favorite prop on Star Trek as alien fruit (the 'Golana melon')!",
+    shape: { type: "horned_cylinder", width: 140, height: 150, hornSpikes: true, greenGel: true }
+  },
+  {
+    id: "cloudberry",
+    name: "Cloudberry",
+    scientificName: "Rubus chamaemorus (Arctic Gold)",
+    category: "Berry",
+    difficulty: "legendary",
+    emoji: "🟠",
+    origin: "Arctic and subarctic alpine tundra bogs",
+    flavor: "Tart, creamy, amber honey with apricot and yogurt nuances",
+    colors: { primary: "#FAA307", secondary: "#E85D04", drupe: "#FFBA08", leaf: "#52B788", glow: "rgba(250, 163, 7, 0.5)" },
+    nutrition: { calories: 51, vitaminC: "175%", fiber: "6.0g", sugar: "6g", potassium: "448mg" },
+    funFact: "Called 'Arctic Gold' in Scandinavia, this solitary golden berry grows wild in boggy permafrost tundra and is featured on the Finnish 2-euro coin!",
+    shape: { type: "golden_drupelet", width: 125, height: 130, amberGlow: true }
+  },
+  {
+    id: "yuzu",
+    name: "Yuzu",
+    scientificName: "Citrus junos",
+    category: "Citrus",
+    difficulty: "hard",
+    emoji: "🍋",
+    origin: "Upper Yangtze River region of China, perfected in Japan",
+    flavor: "Aromatic hybrid of grapefruit, mandarin, and floral lime",
+    colors: { primary: "#FFE600", secondary: "#D4AF37", glow: "rgba(255, 230, 0, 0.5)" },
+    nutrition: { calories: 30, vitaminC: "90%", fiber: "1.8g", sugar: "4.8g", potassium: "210mg" },
+    funFact: "In Japan, it is a winter solstice tradition to take a 'Yuzuyu' (a hot relaxing bath floating whole fragrant yuzu fruits) to ward off winter colds.",
+    shape: { type: "bumpy_yuzu_citrus", width: 135, height: 130, unevenSkin: true }
+  },
+  {
+    id: "mulberry",
+    name: "Mulberry",
+    scientificName: "Morus nigra",
+    category: "Berry",
+    difficulty: "medium",
+    emoji: "🫐",
+    origin: "Southwestern Asia",
+    flavor: "Rich, sweet-tart, intense dark blackberry-wine flavor",
+    colors: { primary: "#240046", secondary: "#10002B", redBerry: "#7B2CBF", glow: "rgba(36, 0, 70, 0.4)" },
+    nutrition: { calories: 43, vitaminC: "61%", fiber: "1.7g", sugar: "8.1g", potassium: "194mg" },
+    funFact: "White mulberry leaves are the sole food source of the silkworm caterpillar, powering the global silk trade for millennia along the Silk Road.",
+    shape: { type: "elongated_catkin", width: 120, height: 150, multiDrupelets: true }
+  },
+  {
+    id: "cherimoya",
+    name: "Cherimoya",
+    scientificName: "Annona cherimola",
+    category: "Exotic",
+    difficulty: "hard",
+    emoji: "🍐",
+    origin: "Andes Valleys of Ecuador, Peru & Chile",
+    flavor: "Luscious creamy custard blending pineapple, banana, papaya, and strawberry",
+    colors: { primary: "#52B788", secondary: "#2D6A4F", scales: "#74C69D", glow: "rgba(82, 183, 136, 0.4)" },
+    nutrition: { calories: 75, vitaminC: "21%", fiber: "3.0g", sugar: "13g", potassium: "287mg" },
+    funFact: "Author Mark Twain famously praised the cherimoya as 'the most delicious fruit known to men'. Also called the 'Custard Apple'.",
+    shape: { type: "scale_cone", width: 135, height: 145, thumbprintScales: true }
+  },
+  {
+    id: "sapodilla",
+    name: "Sapodilla (Chikoo)",
+    scientificName: "Manilkara zapota",
+    category: "Tropical",
+    difficulty: "legendary",
+    emoji: "🥔",
+    origin: "Southern Mexico, Central America, and the Caribbean",
+    flavor: "Brown sugar, malty caramel, pear, sweet spice",
+    colors: { primary: "#8D5B4C", secondary: "#6F4E37", flesh: "#DDA15E", glow: "rgba(141, 91, 76, 0.5)" },
+    nutrition: { calories: 83, vitaminC: "24%", fiber: "5.3g", sugar: "20g", potassium: "193mg" },
+    funFact: "The sapodilla tree's white latex sap (called 'chicle') was the original natural base ingredient used to make chewing gum by the ancient Maya and early American gum companies!",
+    shape: { type: "fuzzy_egg", width: 130, height: 140, brownSugarFlesh: true }
+  }
+];
+
+// Helper functions for easy querying and game mechanics
+const FruitHelpers = {
+  getById(id) {
+    return FRUITS_DATABASE.find(f => f.id === id);
+  },
+  getByCategory(cat) {
+    return FRUITS_DATABASE.filter(f => f.category.toLowerCase() === cat.toLowerCase());
+  },
+  getByDifficulty(diff) {
+    return FRUITS_DATABASE.filter(f => f.difficulty.toLowerCase() === diff.toLowerCase());
+  },
+  getRandom(count = 1, excludeIds = []) {
+    const pool = FRUITS_DATABASE.filter(f => !excludeIds.includes(f.id));
+    const shuffled = [...pool].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  },
+  getDistractors(correctFruit, count = 3) {
+    // Generate 3 clever distractors preferably from same difficulty or category
+    const sameCategory = FRUITS_DATABASE.filter(f => f.id !== correctFruit.id && f.category === correctFruit.category);
+    const others = FRUITS_DATABASE.filter(f => f.id !== correctFruit.id && f.category !== correctFruit.category);
+    
+    let candidates = [...sameCategory.sort(() => 0.5 - Math.random()), ...others.sort(() => 0.5 - Math.random())];
+    const picked = candidates.slice(0, count);
+    
+    // Shuffle with correct fruit
+    const options = [...picked, correctFruit].sort(() => 0.5 - Math.random());
+    return options;
+  },
+  getAllCategories() {
+    return [...new Set(FRUITS_DATABASE.map(f => f.category))];
+  }
+};
+
+// Export to window for browser access
+if (typeof window !== "undefined") {
+  window.FRUITS_DATABASE = FRUITS_DATABASE;
+  window.FruitHelpers = FruitHelpers;
+}
